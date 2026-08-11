@@ -1,0 +1,25 @@
+package com.abaclone.mobile.navigation
+
+sealed class AbaDestination(val route: String) {
+    object Welcome : AbaDestination("welcome")
+    object Terms : AbaDestination("terms")
+    object PhoneEntry : AbaDestination("phone_entry")
+    object Otp : AbaDestination("otp")
+    object SecretWordInfo : AbaDestination("secret_word_info")
+    object CreatePassword : AbaDestination("create_password")
+    object CreatePin : AbaDestination("create_pin")
+    object ActivationSuccess : AbaDestination("activation_success")
+    object InstantAccountWelcome : AbaDestination("instant_account_welcome")
+    object NidScan : AbaDestination("nid_scan")
+    object FacePass : AbaDestination("face_pass")
+    object DocumentDetails : AbaDestination("document_details")
+    object Login : AbaDestination("login")
+    object Home : AbaDestination("home")
+    object Cards : AbaDestination("cards")
+    object QrPay : AbaDestination("qr_pay")
+    object History : AbaDestination("history")
+    object Profile : AbaDestination("profile")
+    object Wallet : AbaDestination("wallet")
+    object Accounts : AbaDestination("accounts")
+    object Transfer : AbaDestination("transfer")
+}

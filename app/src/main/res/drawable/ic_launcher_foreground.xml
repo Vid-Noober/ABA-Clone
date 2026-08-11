@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Simple circular badge -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,29 A25,25 0 1 1 53.99,29 Z" />
+    <path
+        android:fillColor="#7A1128"
+        android:pathData="M35,63 L41,42 L47,42 L53,63 L47.5,63 L46.3,58.5 L41.5,58.5 L40.3,63 Z M42.6,54.3 L45.2,54.3 L43.9,48.8 Z" />
+    <path
+        android:fillColor="#7A1128"
+        android:pathData="M56,63 L56,42 L64,42 C67.3,42 69,43.8 69,46.4 C69,48.2 68.1,49.4 66.8,50 C68.4,50.6 69.6,52 69.6,54.2 C69.6,57.2 67.6,63 63.8,63 Z M60.6,50.3 L63.4,50.3 C64.6,50.3 65.2,49.6 65.2,48.6 C65.2,47.6 64.6,46.9 63.4,46.9 L60.6,46.9 Z M60.6,58.3 L63.8,58.3 C65.2,58.3 65.9,57.5 65.9,56.3 C65.9,55.1 65.2,54.3 63.8,54.3 L60.6,54.3 Z" />
+</vector>

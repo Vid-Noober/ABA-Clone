@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "423155451124",
+    "project_id": "abaapp-c37df",
+    "storage_bucket": "abaapp-c37df.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423155451124:android:ba886ccf98de0f66a04aa1",
+        "android_client_info": {
+          "package_name": "com.abaclone.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1zb-k_Z5eAeU2le7JotnB7TDFGRyY9jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
