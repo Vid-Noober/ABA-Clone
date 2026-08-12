@@ -15,6 +15,7 @@ import com.abaclone.mobile.data.RegistrationState
 import com.abaclone.mobile.ui.components.AbaBottomBar
 import com.abaclone.mobile.ui.screens.AccountsScreen
 import com.abaclone.mobile.ui.screens.CardsScreen
+import com.abaclone.mobile.ui.screens.NotificationsScreen
 import com.abaclone.mobile.ui.screens.HistoryScreen
 import com.abaclone.mobile.ui.screens.HomeScreen
 import com.abaclone.mobile.ui.screens.LoginScreen
@@ -200,12 +201,17 @@ fun AbaNavGraph() {
                 composable(AbaDestination.Home.route) {
                     HomeScreen(
                         onSeeAllTransactions = { navController.navigate(AbaDestination.History.route) },
-                        onAccountClick = { navController.navigate(AbaDestination.Accounts.route) }
+                        onAccountClick = { navController.navigate(AbaDestination.Accounts.route) },
+                        onNotificationClick = { navController.navigate(AbaDestination.Notifications.route) }
                     )
                 }
 
                 composable(AbaDestination.Accounts.route) {
                     AccountsScreen(onBack = { navController.popBackStack() })
+                }
+
+                composable(AbaDestination.Notifications.route) {
+                    NotificationsScreen(onBack = { navController.popBackStack() })
                 }
 
                 composable(AbaDestination.Wallet.route) {

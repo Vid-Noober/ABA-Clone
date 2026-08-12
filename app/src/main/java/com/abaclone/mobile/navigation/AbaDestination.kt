@@ -21,5 +21,6 @@ sealed class AbaDestination(val route: String) {
     object Profile : AbaDestination("profile")
     object Wallet : AbaDestination("wallet")
     object Accounts : AbaDestination("accounts")
+    object Notifications : AbaDestination("notifications")
     object Transfer : AbaDestination("transfer")
 }

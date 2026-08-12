@@ -57,22 +57,25 @@ fun AccountsScreen(onBack: () -> Unit) {
                 },
                 title = {
                     Text("ABA Accounts", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                },
-                actions = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Filled.Close, contentDescription = "Close", tint = Color.White)
-                    }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* edit/add account action */ },
+                onClick = { /* add account */ },
                 containerColor = AbaRed,
                 contentColor = Color.White,
-                shape = CircleShape
+                shape = RoundedCornerShape(28.dp),
+                modifier = Modifier.padding(bottom = 16.dp)
             ) {
-                Icon(Icons.Filled.MoreHoriz, contentDescription = "Actions")
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Text("+", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                    Text("Account", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                }
             }
         }
     ) { padding ->
@@ -107,114 +110,188 @@ fun AccountsScreen(onBack: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(DarkNavy)
-                        .padding(20.dp)
+                        .padding(horizontal = 20.dp, vertical = 16.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Circular graph summary
+                        // Circular graph summary with ring indicator
                         Box(
                             modifier = Modifier
-                               .size(110.dp)
-                               .clip(CircleShape)
-                               .background(DarkNavyTop),
+                                .size(110.dp)
+                                .clip(CircleShape)
+                                .background(DarkNavyTop),
                             contentAlignment = Alignment.Center
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .size(96.dp)
+                                    .size(92.dp)
                                     .clip(CircleShape)
                                     .background(DarkNavy),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text("All Accounts", color = Color.White, fontSize = 11.sp)
-                                    Text("Summary", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    Icon(Icons.Filled.MoreHoriz, contentDescription = null, tint = Color.LightGray, modifier = Modifier.size(18.dp))
+                                    Spacer(Modifier.height(2.dp))
+                                    Text("All Accounts", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                                 }
                             }
-                            // Ring indicator overlay
                             Box(
                                 modifier = Modifier
                                     .matchParentSize()
                                     .clip(CircleShape)
                                     .background(Color.Transparent)
-                                    .border(6.dp, TealCircle, CircleShape)
+                                    .border(6.dp, Color(0xFFC77DF3), CircleShape)
                             )
                         }
 
                         Column(horizontalAlignment = Alignment.End) {
-                            Text("Total in USD", color = Color.White.copy(alpha = 0.7f), fontSize = 13.sp)
+                            Text("Available Balance", color = Color.White.copy(alpha = 0.7f), fontSize = 12.sp)
                             Spacer(Modifier.height(4.dp))
-                            HorizontalDivider(color = Color.White.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.width(160.dp))
-                            Spacer(Modifier.height(8.dp))
                             Text(
                                 text = "$ ${"%.2f".format(currentBalance)}",
                                 color = Color.White,
-                                fontSize = 26.sp,
+                                fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            HorizontalDivider(color = Color.White.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.width(160.dp))
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                text = "៛ ${"%,.2f".format(currentBalance * 4100)}",
+                                color = Color.White.copy(alpha = 0.9f),
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.SemiBold
                             )
                         }
                     }
                 }
 
-                Spacer(Modifier.height(10.dp))
-
-                // Account List Card (Payroll Account)
+                // Analytics banner bar
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFEFEFF4))
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .background(DarkNavyTop.copy(alpha = 0.6f))
+                        .padding(vertical = 8.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Card(
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Analytics", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                        Spacer(Modifier.width(4.dp))
+                        Text("▼", color = Color.White, fontSize = 10.sp)
+                    }
+                }
+
+                Spacer(Modifier.height(8.dp))
+
+                // Account Cards List with top rounded corners container
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                        .background(Color(0xFFEFEFF4))
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                ) {
+                    Column(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White)
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(
-                                    modifier = Modifier
-                                        .width(4.dp)
-                                        .height(42.dp)
-                                        .background(TealCircle)
-                                )
-                                Spacer(Modifier.width(12.dp))
-                                Column {
-                                    Text("Payroll Account", color = Color.Black, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                                    Spacer(Modifier.height(2.dp))
-                                    Text(MockData.account.accountNumber, color = Color.Gray, fontSize = 13.sp)
-                                    Spacer(Modifier.height(8.dp))
-                                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(
+                                        modifier = Modifier
+                                            .width(4.dp)
+                                            .height(48.dp)
+                                            .background(TealCircle)
+                                    )
+                                    Spacer(Modifier.width(12.dp))
+                                    Column {
+                                        Text("Savings", color = Color.Black, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                        Spacer(Modifier.height(2.dp))
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text("006 027 575 | Savings  ", color = Color.Gray, fontSize = 12.sp)
+                                            Box(
+                                                modifier = Modifier
+                                                    .clip(RoundedCornerShape(4.dp))
+                                                    .background(Color(0xFF00B0FF))
+                                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                                            ) {
+                                                Text("Default", color = Color.White, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                            }
+                                        }
+                                        Spacer(Modifier.height(8.dp))
                                         BadgeTag("VISA")
-                                        BadgeTag("ATM")
                                     }
                                 }
-                            }
 
-                            Column(horizontalAlignment = Alignment.End) {
-                                Text(
-                                    text = "${"%.2f".format(currentBalance)} USD",
-                                    color = Color.Black,
-                                    fontSize = 15.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Spacer(Modifier.height(18.dp))
-                                Text("•••", color = Color.Gray, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                Column(horizontalAlignment = Alignment.End) {
+                                    Text(
+                                        text = "${"%.2f".format(currentBalance)} USD",
+                                        color = Color.Black,
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Spacer(Modifier.height(22.dp))
+                                    Text("•••", color = Color.Gray, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(
+                                        modifier = Modifier
+                                            .width(4.dp)
+                                            .height(48.dp)
+                                            .background(Color(0xFF9C27B0))
+                                    )
+                                    Spacer(Modifier.width(12.dp))
+                                    Column {
+                                        Text("Savings", color = Color.Black, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                        Spacer(Modifier.height(2.dp))
+                                        Text("006 027 576 | Savings", color = Color.Gray, fontSize = 12.sp)
+                                    }
+                                }
+
+                                Column(horizontalAlignment = Alignment.End) {
+                                    Text(
+                                        text = "${"%,.2f".format(currentBalance * 4100)} KHR",
+                                        color = Color.Black,
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Spacer(Modifier.height(22.dp))
+                                    Text("•••", color = Color.Gray, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                }
                             }
                         }
                     }
                 }
             } else {
-                // Cards tab view
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

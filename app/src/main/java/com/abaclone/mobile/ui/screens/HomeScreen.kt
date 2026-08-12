@@ -39,11 +39,12 @@ data class GridItem(
 @Composable
 fun HomeScreen(
     onSeeAllTransactions: () -> Unit = {},
-    onAccountClick: () -> Unit = {}
+    onAccountClick: () -> Unit = {},
+    onNotificationClick: () -> Unit = {}
 ) {
     Scaffold(
         containerColor = DarkNavy,
-        topBar = { AbaTopBar() }
+        topBar = { AbaTopBar(onNotificationClick = onNotificationClick) }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -73,7 +74,7 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AbaTopBar() {
+private fun AbaTopBar(onNotificationClick: () -> Unit = {}) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = DarkNavyTop,
@@ -119,7 +120,7 @@ private fun AbaTopBar() {
             IconButton(onClick = { /* chat */ }) {
                 Icon(Icons.Outlined.ChatBubbleOutline, contentDescription = "Chat", tint = Color.White)
             }
-            IconButton(onClick = { /* notifications */ }) {
+            IconButton(onClick = onNotificationClick) {
                 Icon(Icons.Outlined.NotificationsNone, contentDescription = "Notifications", tint = Color.White)
             }
             IconButton(onClick = { /* cards / wallet stack */ }) {
