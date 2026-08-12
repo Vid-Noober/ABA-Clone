@@ -47,6 +47,12 @@ object FirebaseRepository {
                                     Log.d("FirebaseRepository", "ID photo uploaded: $url")
                                 }
                             }
+                            // Upload face photo if available
+                            RegistrationState.facePhotoPath?.let { path ->
+                                uploadFacePhoto(actualUid, path) { url ->
+                                    Log.d("FirebaseRepository", "Face photo uploaded: $url")
+                                }
+                            }
                             RegistrationState.reset()
                             onSuccess()
                         }
@@ -92,6 +98,41 @@ object FirebaseRepository {
                 }
         } catch (e: Exception) {
             Log.e("FirebaseRepository", "ID photo upload error", e)
+            onResult(null)
+        }
+    }
+
+    private fun uploadFacePhoto(
+        uid: String,
+        localPath: String,
+        onResult: (String?) -> Unit
+    ) {
+        try {
+            val storageRef = FirebaseStorage.getInstance().reference
+                .child("users")
+                .child(uid)
+                .child("face_photo.jpg")
+
+            val uri = Uri.fromFile(File(localPath))
+            storageRef.putFile(uri)
+                .addOnSuccessListener {
+                    storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                        FirebaseFirestore.getInstance()
+                            .collection("users")
+                            .document(uid)
+                            .update("facePhotoUrl", downloadUrl.toString())
+                            .addOnFailureListener { e ->
+                                Log.e("FirebaseRepository", "Failed to update facePhotoUrl in Firestore", e)
+                            }
+                        onResult(downloadUrl.toString())
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("FirebaseRepository", "Face photo upload failed", e)
+                    onResult(null)
+                }
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Face photo upload error", e)
             onResult(null)
         }
     }

@@ -13,6 +13,7 @@ object RegistrationState {
     var dateOfBirth: String = ""
     var kycVerified: Boolean = false
     var idPhotoPath: String? = null
+    var facePhotoPath: String? = null
 
     fun reset() {
         phone = ""
@@ -22,5 +23,6 @@ object RegistrationState {
         dateOfBirth = ""
         kycVerified = false
         idPhotoPath = null
+        facePhotoPath = null
     }
 }
