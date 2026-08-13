@@ -117,10 +117,8 @@ fun AbaNavGraph() {
                             if (instantAccountFlow) {
                                 navController.navigate(AbaDestination.NidScan.route)
                             } else {
-                                // Direct entry to dashboard for "Activate ABA Mobile" flow
-                                navController.navigate(AbaDestination.Home.route) {
-                                    popUpTo(AbaDestination.Welcome.route) { inclusive = true }
-                                }
+                                // For "Activate ABA Mobile" flow - go to Create PIN
+                                navController.navigate(AbaDestination.CreatePin.route)
                             }
                         }
                     )
@@ -143,7 +141,15 @@ fun AbaNavGraph() {
                 composable(AbaDestination.CreatePin.route) {
                     CreatePinScreen(
                         onBack = { navController.popBackStack() },
-                        onNext = { navController.navigate(AbaDestination.ActivationSuccess.route) }
+                        onNext = {
+                            if (instantAccountFlow) {
+                                // For Instant Account - go to Activation Success
+                                navController.navigate(AbaDestination.ActivationSuccess.route)
+                            } else {
+                                // For Activate ABA Mobile - go to Face Scan
+                                navController.navigate(AbaDestination.FacePass.route)
+                            }
+                        }
                     )
                 }
 
@@ -176,7 +182,17 @@ fun AbaNavGraph() {
                 composable(AbaDestination.FacePass.route) {
                     FacePassScreen(
                         onBack = { navController.popBackStack() },
-                        onDone = { navController.navigate(AbaDestination.DocumentDetails.route) }
+                        onDone = {
+                            if (instantAccountFlow) {
+                                // For Instant Account - go to Document Details
+                                navController.navigate(AbaDestination.DocumentDetails.route)
+                            } else {
+                                // For Activate ABA Mobile - go to Login
+                                navController.navigate(AbaDestination.Login.route) {
+                                    popUpTo(AbaDestination.Welcome.route) { inclusive = true }
+                                }
+                            }
+                        }
                     )
                 }
 

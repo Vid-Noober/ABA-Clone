@@ -1,5 +1,6 @@
 package com.abaclone.mobile.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,17 +29,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentActivity
+import com.abaclone.mobile.ui.theme.AbaGold
 import com.abaclone.mobile.ui.theme.AbaNavyDark
 import com.abaclone.mobile.ui.theme.AbaNavyLight
+import com.abaclone.mobile.util.BiometricAuthHelper
 
 private const val PIN_LENGTH = 6
 
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
     var pin by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val activity = context as? FragmentActivity
 
     Column(
         modifier = Modifier
@@ -56,8 +67,16 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             modifier = Modifier
                 .size(96.dp)
                 .clip(CircleShape)
-                .background(Color(0xFFD9D9D9))
-        )
+                .background(Color(0xFFD9D9D9)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Face,
+                contentDescription = "User avatar",
+                tint = Color.Gray,
+                modifier = Modifier.size(48.dp)
+            )
+        }
 
         Spacer(Modifier.height(20.dp))
         Text("Enter your PIN to login", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Medium)
@@ -66,6 +85,83 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         PinDots(length = PIN_LENGTH, filled = pin.length)
 
         Spacer(Modifier.weight(1f))
+
+        // Face Scan Button
+        if (BiometricAuthHelper.isBiometricAvailable(context)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .clip(RoundedCornerShape(50))
+                    .background(AbaGold)
+                    .clickable {
+                        activity?.let { act ->
+                            BiometricAuthHelper.showBiometricPrompt(
+                                activity = act,
+                                title = "Face Scan Login",
+                                subtitle = "Verify your identity using face recognition",
+                                onSuccess = {
+                                    Toast.makeText(context, "Face recognized!", Toast.LENGTH_SHORT).show()
+                                    onLoginSuccess()
+                                },
+                                onError = { errorCode, errString ->
+                                    Toast.makeText(context, "Error: $errString", Toast.LENGTH_SHORT).show()
+                                },
+                                onFailed = {
+                                    Toast.makeText(context, "Face not recognized. Try again.", Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        }
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Face,
+                        contentDescription = "Face scan",
+                        tint = AbaNavyDark,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text(
+                        "Login with Face Scan",
+                        color = AbaNavyDark,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // Divider with "OR"
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(1.dp)
+                        .background(Color.White.copy(alpha = 0.3f))
+                )
+                Text(
+                    "  OR  ",
+                    color = Color.White.copy(alpha = 0.6f),
+                    fontSize = 12.sp
+                )
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(1.dp)
+                        .background(Color.White.copy(alpha = 0.3f))
+                )
+            }
+
+            Spacer(Modifier.height(12.dp))
+        }
 
         Keypad(
             onKey = { key ->
