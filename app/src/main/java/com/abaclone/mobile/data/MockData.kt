@@ -27,7 +27,7 @@ object MockData {
     val account = UserAccount(
         holderName = "David",
         accountNumber = "000 762 XXX",
-        balance = 777.77
+        balance = 1000.00
     )
 
     val quickActions = listOf(

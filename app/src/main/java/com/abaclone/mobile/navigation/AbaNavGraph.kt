@@ -157,6 +157,7 @@ fun AbaNavGraph() {
                     ActivationSuccessScreen(
                         name = "Besdong",
                         onNext = {
+                            // For both flows — go to Login (6-digit PIN) screen
                             navController.navigate(AbaDestination.Login.route) {
                                 popUpTo(AbaDestination.Welcome.route) { inclusive = true }
                             }
@@ -187,10 +188,8 @@ fun AbaNavGraph() {
                                 // For Instant Account - go to Document Details
                                 navController.navigate(AbaDestination.DocumentDetails.route)
                             } else {
-                                // For Activate ABA Mobile - go to Login
-                                navController.navigate(AbaDestination.Login.route) {
-                                    popUpTo(AbaDestination.Welcome.route) { inclusive = true }
-                                }
+                                // For Activate ABA Mobile - go to Activation Success, then Home
+                                navController.navigate(AbaDestination.ActivationSuccess.route)
                             }
                         }
                     )
